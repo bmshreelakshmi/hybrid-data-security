@@ -1,0 +1,84 @@
+
+{% extends "base.html" %}
+
+{% block title %}Receiver · HybridShield{% endblock %}
+
+{% block content %}
+
+<section class="heading">
+    <small>RECEIVER WORKSPACE</small>
+    <h1>Reveal a protected message</h1>
+    <p>Upload the original stego PNG and verify it before revealing plaintext.</p>
+</section>
+
+<section class="split">
+
+    <form method="post" enctype="multipart/form-data" class="panel">
+
+        <small>MESSAGE VERIFICATION</small>
+        <h2>Extract &amp; Decrypt</h2>
+
+        <label for="stego">Stego PNG Image</label>
+        <input
+            id="stego"
+            name="stego"
+            type="file"
+            accept="image/png"
+            required
+        >
+
+        <!-- SENDER DROPDOWN -->
+        <label for="sender_public_key">Select Sender</label>
+
+        <select
+            id="sender_public_key"
+            name="sender_public_key"
+            required
+        >
+            <option value="">-- Choose Sender --</option>
+
+            {% for name in sender_names %}
+                <option value="{{ name }}">
+                    {{ name }} — {{ sender_public_keys[name] }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label for="pin">Security PIN</label>
+        <input
+            id="pin"
+            name="pin"
+            type="password"
+            minlength="4"
+            required
+        >
+
+        <p class="hint">
+            Select the sender who sent this image.
+            The sender's registered public key is displayed above.
+        </p>
+
+        <button type="submit" class="btn">
+            Verify &amp; Decrypt →
+        </button>
+
+    </form>
+
+    <aside class="panel">
+        <small>VERIFICATION</small>
+        <h2>What gets checked?</h2>
+
+        <p>01 — Payload extraction</p>
+        <p>02 — Sender verification</p>
+        <p>03 — PIN verification</p>
+        <p>04 — AEAD authentication</p>
+        <p>05 — SHA-256 digest</p>
+
+        <a href="{{ url_for('keys') }}">
+            View your public key →
+        </a>
+    </aside>
+
+</section>
+
+{% endblock %}

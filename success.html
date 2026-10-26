@@ -1,0 +1,60 @@
+```html
+{% extends "base.html" %}
+
+{% block title %}Success · Secure Data Hiding{% endblock %}
+
+{% block content %}
+<section class="result">
+    <div class="check">✓</div>
+    <small>ENCRYPTION COMPLETE</small>
+
+    <h1>Your protected image is ready.</h1>
+
+    <p>
+        Share the PNG, sender public key and PIN with the intended
+        receiver using a safe channel.
+    </p>
+
+    <div class="panel">
+        <img
+            class="preview"
+            src="{{ url_for('output_image', filename=filename) }}"
+            alt="Protected image preview"
+        >
+
+        <h3>{{ filename }}</h3>
+
+        <label>SHA-256 message digest</label>
+        <code>{{ hash_value }}</code>
+
+        <p>
+            <a class="btn"
+               href="{{ url_for('download', filename=filename) }}">
+                Download protected PNG ↓
+            </a>
+        </p>
+
+        {% if drive_link %}
+            <h3>Google Drive Upload Successful!</h3>
+            <p>
+                <a class="btn"
+                   href="{{ drive_link }}"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    View image in Google Drive
+                </a>
+            </p>
+
+        {% elif drive_error %}
+            <h3>Google Drive Upload Failed</h3>
+            <p>{{ drive_error }}</p>
+            <p>Your protected image may still be available locally.</p>
+        {% endif %}
+
+        <p>
+            <a href="{{ url_for('sender') }}">← Back to sender</a>
+        </p>
+    </div>
+</section>
+{% endblock %}
+```
